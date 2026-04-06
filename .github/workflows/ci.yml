@@ -1,15 +1,15 @@
-name: CI MLflow
+name: Simple CI
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  train:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
+    - name: Checkout
       uses: actions/checkout@v3
 
     - name: Setup Python
@@ -17,11 +17,8 @@ jobs:
       with:
         python-version: '3.10'
 
-    - name: Install dependencies
-      run: |
-        pip install mlflow pandas scikit-learn
+    - name: Install
+      run: pip install pandas scikit-learn mlflow
 
-    - name: Run Training
-        run: |
-          cd MLProject
-          python MLProject/modelling.py
+    - name: Run script
+      run: python MLProject/modelling.py
