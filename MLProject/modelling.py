@@ -1,4 +1,5 @@
 import pandas as pd
+import os
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
@@ -6,11 +7,14 @@ from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
 
-# set MLflow ke UI
-mlflow.set_tracking_uri("http://127.0.0.1:5000")
+# HAPUS tracking URI localhost
+# mlflow.set_tracking_uri("http://127.0.0.1:5000")
 
-# load data
-df = pd.read_csv("namadataset_preprocessing/data_clean.csv")
+# FIX PATH (INI KUNCI)
+base_dir = os.path.dirname(__file__)
+file_path = os.path.join(base_dir, "namadataset_preprocessing", "data_clean.csv")
+
+df = pd.read_csv(file_path)
 
 # split data
 X = df.drop("Survived", axis=1)
@@ -30,7 +34,7 @@ with mlflow.start_run():
     # log metric
     mlflow.log_metric("accuracy", acc)
 
-    # log model (artifact)
+    # log model
     mlflow.sklearn.log_model(model, "model")
 
     print("Accuracy:", acc)
